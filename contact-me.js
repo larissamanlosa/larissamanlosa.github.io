@@ -1,34 +1,48 @@
-function ValidateForm(){
-  var validName = false;
-  var validEmail = false;
-  var validMessage = false;
 
+function ValidateForm() {
+		var errorMessages = "";
+		var valid = true;
 
-  var errorMessages ="";  // All the error messages are going to stay in this variable
+		var letters = /^[A-Za-z]+$/;
+        var number = /^[0-9]+$/;
 
+		var first = myContact.first.value;
+		var last = myContact.last.value;
+		var email = myContact.email.value;
+		var text = myContact.commentbox.value;
+		if ((Empty(first)) || !checkLetter(first)) {
+			errorMessages += "<b>First name is required and only accept letters.</b><br>";
+			valid = false;
+		}
+		if ((Empty(last)) || !checkLetter(last)) {
+			errorMessages += "<b>Last name is required and only accept letters.</b><br>";
+			valid = false;
+		}
+		if ((Empty(email)) || (!validateEmail(email))) {
+			errorMessages += "<b>Email is invalid.</b><br>";
+			valid = false;
+		}
+		if ((Empty(text))) {
+			errorMessages += "<b>Message is required.</b><br>";
+			valid = false;
+		}
+		errorMessages += "";
+		document.getElementById("errorMessages").innerHTML = errorMessages;
+		return (valid);
+	}
+function validateEmail(item) {
 
+   	var atpos = item.indexOf("@");
+    var dotpos = item.lastIndexOf(".");
+    if (atpos< 1 || dotpos<atpos+2 || dotpos+2>=item.length) {
 
-/************* VALIDATES NAME ***********/
- if (myContact.name.value===null || myContact.name.value==="")
- errorMessages += "<p>Please provide your name.</p>";
-  else
- validName =true;
-
- /************* VALIDATES EMAIL ***********/
- if (myContact.email.value===null || myContact.email.value==="")
- errorMessages += "<p>Please provide your email.</p>";
-  else
- validEmail =true;
-
-/************* VALIDATES MESSAGE ***********/
-
-  if (myContact.commentbox.value===null || myContact.commentbox.value==="")
-  errorMessages += "<p>Please enter your question or comment in the Message box.</p>";
-  else
- validMessage =true;
-
- document.getElementById("errorMessages").innerHTML = errorMessages;
-
- return (validName && validEmail && validMessage) ;
-
+        return false;
+    }
+    return true;
+}
+function Empty(item) {
+	return (item === null || item ==="");
+}
+function checkLetter(item) {
+	return (item.match(letters));
 }
